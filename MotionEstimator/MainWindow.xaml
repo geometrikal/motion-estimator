@@ -1,0 +1,86 @@
+﻿<Window x:Class="MotionEstimator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MotionEstimator"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="936"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        DataContext="{Binding Source={StaticResource Locator}, Path=MainViewModel}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <ui:SimpleStackPanel Spacing="8"
+                             Grid.Column="0"
+                             Margin="8">
+            <Label FontSize="18">
+                <Label.Resources>
+                    <Style TargetType="Label"
+                           BasedOn="{StaticResource {x:Type Label}}">
+                        <Setter Property="Content"
+                                Value="Camera not connected" />
+                        <Setter Property="Foreground"
+                                Value="Red" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Camera.IsConnected}"
+                                         Value="True">
+                                <Setter Property="Content"
+                                        Value="Camera connected" />
+                                <Setter Property="Foreground"
+                                        Value="DarkGreen" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Resources>
+            </Label>
+            <Label Content="{Binding Speed}"
+                   ContentStringFormat="Speed {0:0.00} m/s"/>
+            <ui:NumberBox Value="{Binding Camera.Exposure, FallbackValue=500}"
+                          Header="Exposure (ms)"
+                          Minimum="500"
+                          Maximum="300000"
+                          SmallChange="500"
+                          SpinButtonPlacementMode="Inline" />
+            <ui:NumberBox Value="{Binding Camera.Gain, FallbackValue=0}"
+                          Header="Gain"
+                          Minimum="0"
+                          Maximum="24"
+                          SmallChange="1"
+                          SpinButtonPlacementMode="Inline" />
+            <ui:NumberBox Value="{Binding Camera.RedBalance, FallbackValue=1.8}"
+                          Header="Red Balance"
+                          Minimum="0.5"
+                          Maximum="3"
+                          SmallChange="0.05"
+                          SpinButtonPlacementMode="Inline" />
+            <ui:NumberBox Value="{Binding Camera.GreenBalance, FallbackValue=1}"
+                          Header="Green Balance"
+                          Minimum="0.5"
+                          Maximum="3"
+                          SmallChange="0.05"
+                          SpinButtonPlacementMode="Inline" />
+            <ui:NumberBox Value="{Binding Camera.BlueBalance, FallbackValue=1.4}"
+                          Header="Blue Balance"
+                          Minimum="0.5"
+                          Maximum="3"
+                          SmallChange="0.05"
+                          SpinButtonPlacementMode="Inline" />
+            <ui:NumberBox Value="{Binding Velocity.DistanceToPlane}"
+                          Header="Distance to plane(mm)"
+                          Minimum="300"
+                          Maximum="2000"
+                          SmallChange="50"
+                          SpinButtonPlacementMode="Inline" />
+        </ui:SimpleStackPanel>
+        <Image x:Name="CameraImage"
+               Margin="8"
+               Grid.Column="1"
+               Stretch="Uniform"
+               VerticalAlignment="Top"
+               Source="{Binding Image}" />
+    </Grid>
+</Window>
